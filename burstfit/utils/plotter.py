@@ -190,14 +190,14 @@ def plot_fit_results(
 
     freqs = fstart + foff * np.linspace(0, nf - 1, nf)
     if not np.any(mask):
-        mask = np.zeros(len(freqs), dtype=np.bool)
+        mask = np.zeros(len(freqs), dtype=bool)
 
     if np.any(outsize):
         assert len(outsize) == 2
         assert nf % outsize[0] == 0
         tsamp = tsamp * nt / outsize[1]
         freqs = freqs.reshape(outsize[0], nf // outsize[0]).mean(-1)
-        mask = (mask.reshape(outsize[0], nf // outsize[0]).mean(-1)).astype(np.bool)
+        mask = (mask.reshape(outsize[0], nf // outsize[0]).mean(-1)).astype(bool)
         model = resize(model, outsize)
         sgram = resize(sgram, outsize)
 
