@@ -1,0 +1,19 @@
+# Exact pins for reproducible pipeline runs:
+#   pip install -c constraints/pipeline.txt burstfit
+#   uv pip install -c constraints/pipeline.txt burstfit
+#
+# BurstFit's multi-component fits are sensitive to last-bit floating-point differences, so
+# results are bit-identical only when these numerical packages match exactly. The Python version
+# does not matter: on the same machine, Python 3.11 and 3.14 with numpy 2.4.6 + scipy 1.17.1 gave
+# bit-identical fits on 50 test pulses. The CPU's SIMD paths (AVX-512 or not) and the C library's
+# libm also change the last bits. For identical numbers across machines, use the container,
+# which fixes both.
+#
+# numpy 2.4.x and scipy 1.17.x have wheels for 3.11-3.14 but not 3.15, so 3.15 uses newer
+# versions and matches 3.11-3.14 only statistically.
+
+numpy==2.4.6 ; python_version < "3.15"
+scipy==1.17.1 ; python_version < "3.15"
+numpy==2.5.5 ; python_version >= "3.15"
+scipy==1.18.1 ; python_version >= "3.15"
+your==0.6.7
