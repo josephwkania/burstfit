@@ -92,7 +92,7 @@ class BurstData(Candidate):
             self.dedispersed, mask=False * np.ones(self.dedispersed.shape)
         )
 
-        if np.any(mask_chans):
+        if len(mask_chans) > 0:
             self.prepare_input_mask(mask_chans)
 
         self.mask_channels()
