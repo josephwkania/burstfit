@@ -24,6 +24,8 @@ class BurstData(Candidate):
         savgol_frequency_window (float): Filter window for savgol filter
         savgol_sigma (float):  Sigma for savgol filter
         flag_rfi (bool): To turn on RFI flagging
+        **kwargs: Passed on to `your.Candidate`, e.g. `spectral_kurtosis_legacy_mad=True` with a version of
+            your that supports it
     """
 
     def __init__(
@@ -39,6 +41,7 @@ class BurstData(Candidate):
         savgol_frequency_window=15,
         savgol_sigma=4,
         flag_rfi=False,
+        **kwargs,
     ):
 
         Candidate.__init__(
@@ -56,6 +59,7 @@ class BurstData(Candidate):
             savgol_frequency_window=savgol_frequency_window,
             savgol_sigma=savgol_sigma,
             flag_rfi=flag_rfi,
+            **kwargs,
         )
         self.dispersed_at_dm = None
         self.i0 = None

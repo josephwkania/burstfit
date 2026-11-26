@@ -1,0 +1,22 @@
+# Pins for EXACT reproduction of fits made with burstfit 0.1.0, your 0.6.7, numpy 1.24 and scipy 1.10.
+#   pip install -c constraints/exact-legacy.txt .
+#
+# Only Python 3.11-3.13: scipy 1.14.1 has no wheels for 3.14+. All of these have manylinux2014
+# (glibc 2.17) wheels, so they also install on systems with glibc 2.17.
+#
+# Pins alone are not enough. You also need:
+#   1. your with the legacy spectral-kurtosis cutoff: BurstData(..., spectral_kurtosis_legacy_mad=True).
+#      This needs a your that has the option (josephwkania/your, branch sk-filter-masked-mad).
+#   2. BurstFit(..., legacy_spectra_window=True), for 0.1.0's spectrum window.
+#   3. The same kind of machine as the reference run. Whether NumPy/OpenBLAS take AVX-512 paths, and the
+#      C library's libm (glibc), change the last bits, and multi-component fits amplify that.
+#
+# Why these versions (bisected with 50 B0355+54 pulses, 2026-11-26):
+#   - scipy 1.15.0 changed MINPACK leastsq, which the unbounded joint fit uses. scipy <= 1.14.1 is exact.
+#   - numpy 2.3.0 changed the float32 summation order. numpy <= 2.2.6 is exact, given BurstData's
+#     dtype-preserving normalisation.
+#   - With these pins and options, Python 3.11 and 3.13 reproduced the numpy 1.24 / scipy 1.10 fits
+#     bit-for-bit on all 50 pulses.
+
+numpy==2.2.6 ; python_version < "3.14"
+scipy==1.14.1 ; python_version < "3.14"
