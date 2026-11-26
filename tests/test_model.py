@@ -1,4 +1,5 @@
 import pytest
+from scipy.integrate import trapezoid
 
 from burstfit.model import *
 from burstfit.utils.functions import pulse_fn, gauss_norm, sgram_fn, gauss
@@ -21,7 +22,7 @@ def test_model_evaluate(model):
     x = np.linspace(0, 100, 100)
     params = [10, 50, 5]
     y = model.evaluate(x, *params)
-    assert pytest.approx(np.trapz(y), abs=0.1) == 10
+    assert pytest.approx(trapezoid(y), abs=0.1) == 10
 
 
 def test_model_dict(model):

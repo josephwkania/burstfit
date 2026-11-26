@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+from scipy.integrate import trapezoid
 
 from burstfit.data import BurstData
 from burstfit.fit import BurstFit
@@ -108,13 +109,13 @@ def test_make_spectra_w_profile_params(bf):
     bf.precalc()
     bf.initial_profilefit(plot=False)
     bf.make_spectra()
-    assert pytest.approx(np.trapz(bf.spectra), abs=0.1) == 1
+    assert pytest.approx(trapezoid(bf.spectra), abs=0.1) == 1
 
 
 def test_make_spectra_wo_profile_params(bf):
     bf.precalc()
     bf.make_spectra()
-    assert pytest.approx(np.trapz(bf.spectra), abs=0.1) == 1
+    assert pytest.approx(trapezoid(bf.spectra), abs=0.1) == 1
 
 
 def test_initial_spectra_fit(bf):

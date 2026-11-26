@@ -3,6 +3,7 @@
 import logging
 
 import numpy as np
+from scipy.integrate import trapezoid
 
 from burstfit.curvefit import CurveFit
 from burstfit.mcmc import MCMC
@@ -205,7 +206,7 @@ class BurstFit:
         self.spectra = self.residual[:, start : end + 1].mean(-1)
 
         logger.debug(f"Normalising spectra to unit area.")
-        self.spectra = self.spectra / np.trapz(self.spectra)
+        self.spectra = self.spectra / trapezoid(self.spectra)
 
     def fitcycle(
         self,
@@ -252,7 +253,7 @@ class BurstFit:
         ydata = self.ts
         if not np.any(bounds):
             if self.sgram_model.pulse_model.nparams == 4:
-                s_bound = 4 * np.trapz(self.ts)
+                s_bound = 4 * trapezoid(self.ts)
                 if s_bound <= 0:
                     if np.max(self.ts) > 0:
                         s_bound = 10 * np.max(self.ts)
