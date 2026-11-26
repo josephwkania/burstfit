@@ -118,6 +118,23 @@ def test_make_spectra_wo_profile_params(bf):
     assert pytest.approx(trapezoid(bf.spectra), abs=0.1) == 1
 
 
+def test_make_spectra_legacy_window(bf):
+    bf.precalc()
+    bf.initial_profilefit(plot=False)
+    try:
+        bf.legacy_spectra_window = False
+        bf.make_spectra()
+        symmetric = np.array(bf.spectra)
+        bf.legacy_spectra_window = True
+        bf.make_spectra()
+        legacy = np.array(bf.spectra)
+    finally:
+        bf.legacy_spectra_window = False
+    assert pytest.approx(trapezoid(legacy), abs=0.1) == 1
+    # The legacy window is one sample shorter, so the spectra differ
+    assert not np.allclose(symmetric, legacy)
+
+
 def test_initial_spectra_fit(bf):
     bf.precalc()
     bf.initial_profilefit(plot=False)

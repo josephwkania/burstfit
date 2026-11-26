@@ -29,6 +29,9 @@ class BurstFit:
         outname: Outname for the outputs
         mask: RFI channel mask array
         mcmcfit: To run MCMC after curve_fit
+        other_params: Initial values of any extra sgram-function parameters (after DM)
+        legacy_spectra_window: Average the spectrum over samples start..end-1, as BurstFit 0.1.0 did, instead of
+            the symmetric start..end. Only for reproducing results from 0.1.0.
     """
 
     def __init__(
@@ -45,8 +48,10 @@ class BurstFit:
         mask=np.array([False]),
         mcmcfit=False,
         other_params=np.array([]),
+        legacy_spectra_window=False,
     ):
         self.sgram_model = sgram_model
+        self.legacy_spectra_window = legacy_spectra_window
         self.sgram = sgram
         self.width = width
         self.dm = dm
@@ -202,8 +207,10 @@ class BurstFit:
         if end > self.nt:
             end = self.nt
         end += int(tau_width)
-        logger.debug(f"Generating spectra from sample {start} to {end}")
-        self.spectra = self.residual[:, start : end + 1].mean(-1)
+        # The window is centred on i0, so it includes `end`. BurstFit 0.1.0 stopped one sample short.
+        stop = end if self.legacy_spectra_window else end + 1
+        logger.debug(f"Generating spectra from sample {start} to {stop - 1}")
+        self.spectra = self.residual[:, start:stop].mean(-1)
 
         logger.debug(f"Normalising spectra to unit area.")
         self.spectra = self.spectra / trapezoid(self.spectra)
