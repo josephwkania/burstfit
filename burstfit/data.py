@@ -187,8 +187,15 @@ class BurstData(Candidate):
         off_pulse_mean = np.mean(off_pulse_data)
         off_pulse_std = np.std(off_pulse_data)
         logger.info(f"Off pulse mean and std are: {off_pulse_mean, off_pulse_std}")
-        on_pulse_data = on_pulse_data - off_pulse_mean
-        on_pulse_data = on_pulse_data / off_pulse_std
+        # Keep the data's float dtype. NumPy 2 (NEP 50) would promote float32 data to float64 here, where
+        # NumPy 1.x kept float32; casting the scalars gives the same result on both.
+        if np.issubdtype(on_pulse_data.dtype, np.floating):
+            dt = on_pulse_data.dtype.type
+            on_pulse_data = on_pulse_data - dt(off_pulse_mean)
+            on_pulse_data = on_pulse_data / dt(off_pulse_std)
+        else:
+            on_pulse_data = on_pulse_data - off_pulse_mean
+            on_pulse_data = on_pulse_data / off_pulse_std
         if return_clip_fac:
             clip_fac = ((2 ** self.nbits - 1) - off_pulse_mean) / off_pulse_std
             logger.debug(f"Clip factor is {clip_fac}")

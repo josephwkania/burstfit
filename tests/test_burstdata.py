@@ -31,6 +31,8 @@ def test_prepare_data(bd):
     assert pytest.approx(bd.sgram.mean(), abs=0.1) == 0
     assert pytest.approx(bd.sgram.std(), abs=0.1) == 1
     assert bd.clip_fac
+    # Normalising keeps the data's dtype on every NumPy version (NumPy 2 would otherwise promote to float64)
+    assert bd.sgram.dtype == bd.dedispersed.dtype
 
 
 def test_input_mask_chans(bd):
