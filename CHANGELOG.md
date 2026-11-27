@@ -44,6 +44,11 @@ Why those pins: scipy 1.15.0 changed MINPACK `leastsq`, which the unbounded join
 changed its AVX-512 float64 code paths. Future releases will aim for statistically equivalent results,
 not bit-identical ones.
 
+### Validation
+- `validation/`: the 50-pulse golden set's candidate lists and reference results, the GREENBURST production
+  wrapper (`fit_one.py`, for 0.1.0 and for 0.2.0), the comparison scripts and a Slurm script.
+  `VALIDATION.md` reports every check behind this release and how to rerun it.
+
 ### CI
 - Tests run on Python 3.11–3.15 with pinned, oldest and latest dependencies. The tests are
   deterministic across NumPy versions.

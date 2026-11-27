@@ -48,6 +48,9 @@ Run on the same kind of machine as the original fits: whether the CPU has AVX-51
 (glibc), change the last bits, and multi-component fits amplify that. See `constraints/exact-legacy.txt`
 for details.
 
+What was checked, the test data, the reference results and how to rerun the checks are in
+[`validation/VALIDATION.md`](validation/VALIDATION.md).
+
 `spectral_kurtosis_legacy_mad` is a new option in `your`, intended for upstream. Until a `your` release
 includes it, install `your` from the branch in the constraints file. Without it, `BurstData` raises
 `TypeError` for that option rather than silently ignoring it.
