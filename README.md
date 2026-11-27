@@ -41,12 +41,16 @@ Python 3.11-3.12:
 pip install -c constraints/exact-legacy.txt .
 ```
 ```python
-bd = BurstData(..., flag_rfi=True, spectral_kurtosis_legacy_mad=True)  # needs a your with this option
+bd = BurstData(..., flag_rfi=True, spectral_kurtosis_legacy_mad=True)  # needs a your with this option (see below)
 bf = BurstFit(..., legacy_spectra_window=True)
 ```
 Run on the same kind of machine as the original fits: whether the CPU has AVX-512, and the C library
 (glibc), change the last bits, and multi-component fits amplify that. See `constraints/exact-legacy.txt`
 for details.
+
+`spectral_kurtosis_legacy_mad` is a new option in `your`, intended for upstream. Until a `your` release
+includes it, install `your` from the branch in the constraints file. Without it, `BurstData` raises
+`TypeError` for that option rather than silently ignoring it.
 
 # Documentation
 Have a look at our [docs](https://thepetabyteproject.github.io/burstfit/) for the documentation.

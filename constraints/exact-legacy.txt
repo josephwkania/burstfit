@@ -6,7 +6,8 @@
 #
 # Pins alone are not enough. You also need:
 #   1. your with the legacy spectral-kurtosis cutoff: BurstData(..., spectral_kurtosis_legacy_mad=True).
-#      This needs a your that has the option (josephwkania/your, branch sk-filter-masked-mad).
+#      This needs a your with that option, which is intended for upstream thepetabyteproject/your.
+#      Until a your release has it, install your from josephwkania/your, branch sk-filter-masked-mad.
 #   2. BurstFit(..., legacy_spectra_window=True), for 0.1.0's spectrum window.
 #   3. The same kind of machine as the reference run: AVX-512 or not (NumPy and OpenBLAS pick their
 #      code paths from the CPU), and the same glibc (libm). Either changes the last bits, and
