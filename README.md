@@ -36,7 +36,7 @@ See `constraints/pipeline.txt` for what is pinned and why.
 
 ## Reproducing results from BurstFit 0.1.0
 Fits made with BurstFit 0.1.0 (your 0.6.7, NumPy 1.x, SciPy <= 1.10) can be reproduced bit-for-bit on
-Python 3.11-3.13:
+Python 3.11-3.12:
 ```bash
 pip install -c constraints/exact-legacy.txt .
 ```
@@ -44,9 +44,9 @@ pip install -c constraints/exact-legacy.txt .
 bd = BurstData(..., flag_rfi=True, spectral_kurtosis_legacy_mad=True)  # needs a your with this option
 bf = BurstFit(..., legacy_spectra_window=True)
 ```
-Run on the same kind of machine as the original fits. Whether NumPy takes AVX-512 code paths, and the C
-library (glibc), change the last bits, and multi-component fits amplify that. See
-`constraints/exact-legacy.txt` for details.
+Run on the same kind of machine as the original fits: whether the CPU has AVX-512, and the C library
+(glibc), change the last bits, and multi-component fits amplify that. See `constraints/exact-legacy.txt`
+for details.
 
 # Documentation
 Have a look at our [docs](https://thepetabyteproject.github.io/burstfit/) for the documentation.
