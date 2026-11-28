@@ -39,7 +39,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-tests = ["pytest>=8", "pytest-cov"]
+tests = ["pytest>=8", "pytest-cov>=5"]
 
 [project.urls]
 Homepage = "https://github.com/thepetabyteproject/burstfit"
