@@ -24,6 +24,8 @@ class BurstData(Candidate):
         savgol_frequency_window (float): Filter window for savgol filter
         savgol_sigma (float):  Sigma for savgol filter
         flag_rfi (bool): To turn on RFI flagging
+        **kwargs: Passed on to `your.Candidate`, e.g. `spectral_kurtosis_legacy_mad=True` with a version of
+            your that supports it
     """
 
     def __init__(
@@ -39,6 +41,7 @@ class BurstData(Candidate):
         savgol_frequency_window=15,
         savgol_sigma=4,
         flag_rfi=False,
+        **kwargs,
     ):
 
         Candidate.__init__(
@@ -56,6 +59,7 @@ class BurstData(Candidate):
             savgol_frequency_window=savgol_frequency_window,
             savgol_sigma=savgol_sigma,
             flag_rfi=flag_rfi,
+            **kwargs,
         )
         self.dispersed_at_dm = None
         self.i0 = None
@@ -92,7 +96,7 @@ class BurstData(Candidate):
             self.dedispersed, mask=False * np.ones(self.dedispersed.shape)
         )
 
-        if np.any(mask_chans):
+        if len(mask_chans) > 0:
             self.prepare_input_mask(mask_chans)
 
         self.mask_channels()
@@ -187,8 +191,15 @@ class BurstData(Candidate):
         off_pulse_mean = np.mean(off_pulse_data)
         off_pulse_std = np.std(off_pulse_data)
         logger.info(f"Off pulse mean and std are: {off_pulse_mean, off_pulse_std}")
-        on_pulse_data = on_pulse_data - off_pulse_mean
-        on_pulse_data = on_pulse_data / off_pulse_std
+        # Keep the data's float dtype. NumPy 2 (NEP 50) would promote float32 data to float64 here, where
+        # NumPy 1.x kept float32; casting the scalars gives the same result on both.
+        if np.issubdtype(on_pulse_data.dtype, np.floating):
+            dt = on_pulse_data.dtype.type
+            on_pulse_data = on_pulse_data - dt(off_pulse_mean)
+            on_pulse_data = on_pulse_data / dt(off_pulse_std)
+        else:
+            on_pulse_data = on_pulse_data - off_pulse_mean
+            on_pulse_data = on_pulse_data / off_pulse_std
         if return_clip_fac:
             clip_fac = ((2 ** self.nbits - 1) - off_pulse_mean) / off_pulse_std
             logger.debug(f"Clip factor is {clip_fac}")

@@ -166,7 +166,9 @@ def test_read_json_and_precalc(bf, bd, bio):
         # This is why the following assertion works. Otherwise header['dtype'].__name__ should be used.
         if "base" not in key and "file" not in key:
             assert pytest.approx(value) == header[key]
-    assert bio.clip_fac == bf.clip_fac
+    # test.json was written with NumPy 1.x. NumPy 2 promotes the normalised data to float64 (NEP 50), and
+    # NumPy >= 2.3 sums float32 in a different order, so clip_fac moves at the ~1e-7 level.
+    assert pytest.approx(bio.clip_fac, rel=1e-6) == bf.clip_fac
     assert bio.nt == bf.nt
     assert bio.nf == bf.nf
     assert bio.i0 == bf.i0

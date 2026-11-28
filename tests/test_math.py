@@ -1,7 +1,15 @@
 import numpy as np
+import pytest
 
 from burstfit.utils.math import f_test, fmae, transform_parameters
 from burstfit.utils.math import tests as te
+
+
+@pytest.fixture(autouse=True)
+def _seed():
+    # The statistical tests below are probabilistic; with unseeded draws they fail by chance now and then.
+    # np.random.seed (RandomState) gives the same stream on every NumPy version.
+    np.random.seed(2021)
 
 
 def test_ftest():

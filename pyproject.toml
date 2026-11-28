@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "burstfit"
+dynamic = ["version"]
+description = "Spectro-temporal modeling of FRBs"
+readme = "README.md"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Kshitij Aggarwal", email = "ka0064@mix.wvu.edu" },
+    { name = "Devansh Agarwal", email = "da0017@mix.wvu.edu" },
+]
+requires-python = ">=3.11"
+# Lower bounds are the oldest versions tested (CI "oldest" job). For reproducible pipeline runs,
+# install with the exact pins in constraints/pipeline.txt.
+dependencies = [
+    "numpy>=1.24.4",
+    "scipy>=1.10.1",
+    "matplotlib>=3.7.5",
+    "scikit-image>=0.21.0",
+    "emcee>=3.1.6",
+    "corner>=2.2.1",
+    "your>=0.6.7",
+]
+classifiers = [
+    "Natural Language :: English",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+[project.optional-dependencies]
+tests = ["pytest>=8", "pytest-cov>=5"]
+
+[project.urls]
+Homepage = "https://github.com/thepetabyteproject/burstfit"
+Documentation = "https://thepetabyteproject.github.io/burstfit/"
+Paper = "https://arxiv.org/abs/2107.05658"
+
+[tool.setuptools.dynamic]
+version = { attr = "burstfit.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["burstfit*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

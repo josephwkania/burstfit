@@ -24,9 +24,36 @@ Or if you want to try out the latest stuff,
 ```bash
 git clone https://github.com/thepetabyteproject/burstfit
 cd burstfit
-pip install -r requirements.txt
-python setup.py install
-``` 
+pip install .
+```
+BurstFit needs Python 3.11 or newer.
+
+For reproducible results (for example, in a pipeline), install with the pinned numerical stack:
+```bash
+pip install -c constraints/pipeline.txt .
+```
+See `constraints/pipeline.txt` for what is pinned and why.
+
+## Reproducing results from BurstFit 0.1.0
+Fits made with BurstFit 0.1.0 (your 0.6.7, NumPy 1.x, SciPy <= 1.10) can be reproduced bit-for-bit on
+Python 3.11-3.12:
+```bash
+pip install -c constraints/exact-legacy.txt .
+```
+```python
+bd = BurstData(..., flag_rfi=True, spectral_kurtosis_legacy_mad=True)  # needs a your with this option (see below)
+bf = BurstFit(..., legacy_spectra_window=True)
+```
+Run on the same kind of machine as the original fits: whether the CPU has AVX-512, and the C library
+(glibc), change the last bits, and multi-component fits amplify that. See `constraints/exact-legacy.txt`
+for details.
+
+What was checked, the test data, the reference results and how to rerun the checks are in
+[`validation/VALIDATION.md`](validation/VALIDATION.md).
+
+`spectral_kurtosis_legacy_mad` is a new option in `your`, intended for upstream. Until a `your` release
+includes it, install `your` from the branch in the constraints file. Without it, `BurstData` raises
+`TypeError` for that option rather than silently ignoring it.
 
 # Documentation
 Have a look at our [docs](https://thepetabyteproject.github.io/burstfit/) for the documentation.

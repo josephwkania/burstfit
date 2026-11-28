@@ -9,7 +9,7 @@
         "ra_deg": 186.656816998,
         "dec_deg": 13.9644755659,
         "bw": -336.0,
-        "center_freq": 1297.0,
+        "center_freq": 1297.5,
         "nbits": 8,
         "format": "fil",
         "dtype": "uint8",
